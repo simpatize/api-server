@@ -1,0 +1,31 @@
+{
+  "name": "simpatize-server",
+  "version": "1.0.0",
+  "description": "simpatize server",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "test": "NODE_ENV=test mocha 'modules/**/*.tests.js'",
+    "lint": "jscs ."
+  },
+  "author": "Mauricio Melo",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.15.0",
+    "express": "^4.13.4",
+    "glob": "^7.0.0",
+    "http-status": "^0.2.0",
+    "lodash": "^4.3.0",
+    "mongoose": "^4.4.3"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-http": "^2.0.1",
+    "database-cleaner": "^0.11.0",
+    "jscs": "^2.10.1",
+    "mocha": "^2.4.5",
+    "nodemon": "^1.9.0",
+    "require-dir": "^0.3.0",
+    "supertest": "^1.2.0"
+  }
+}
