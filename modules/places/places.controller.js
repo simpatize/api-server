@@ -1,10 +1,13 @@
-const Place = require('./place.model');
+'use strict';
+
+var PlaceService = require('./place.service');
+var placeService = new PlaceService();
 
 exports.list = function (req, res) {
-  Place.find(function (err, places) {
-    if (err)
-      res.send(err);
+  let keyword = req.query.keyword;
 
+  placeService.searchByKeyword(keyword, function (error, places) {
+    if (error) throw error;
     res.json(places);
   });
 };

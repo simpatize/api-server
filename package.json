@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "nodemon server.js",
-    "test": "NODE_ENV=test mocha 'modules/**/*.tests.js'",
+    "test": "NODE_ENV=test mocha 'modules/**/*.spec.js'",
     "lint": "jscs ."
   },
   "author": "Mauricio Melo",
@@ -14,6 +14,7 @@
     "body-parser": "^1.15.0",
     "express": "^4.13.4",
     "glob": "^7.0.0",
+    "googleplaces": "^0.6.0",
     "http-status": "^0.2.0",
     "lodash": "^4.3.0",
     "mongoose": "^4.4.3"
@@ -23,9 +24,13 @@
     "chai-http": "^2.0.1",
     "database-cleaner": "^0.11.0",
     "jscs": "^2.10.1",
+    "jswiremock": "^0.3.2",
     "mocha": "^2.4.5",
+    "mock-request": "^0.1.2",
+    "nock": "^7.5.0",
     "nodemon": "^1.9.0",
     "require-dir": "^0.3.0",
+    "sinon": "^1.17.3",
     "supertest": "^1.2.0"
   }
 }
