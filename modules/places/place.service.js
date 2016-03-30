@@ -24,14 +24,41 @@ class PlaceService {
       radius: 17000,
     };
 
-    this.googlePlaces.nearBySearch(parameters, function (error, places) {
-      let domainPlaces = places.results.map((p) => {
-        return {
-          name: p.name
-        }
+    this.googlePlaces.nearBySearch(parameters,  (error, places) => {
+      let placesPromises = places.results.map((p) => {
+        return this._createPlacePromise(p);
       });
-      callback(error, domainPlaces);
+
+      Promise.all(placesPromises).then(function(places) {
+        callback(null, places);
+      }, function(error) {
+        callback(error, null);
+      });
     });
+  }
+
+  _createPlacePromise(rawPlace) {
+
+    return new Promise(
+      (resolve, reject) => {
+        if (!rawPlace.photos) {
+          return resolve({
+            name: rawPlace.name,
+            thumbnailUrl: '',
+          });
+        }
+
+        let imageFetchParameters = {
+          photoreference: rawPlace.photos[0].photo_reference,
+        }
+        this.googlePlaces.imageFetch(imageFetchParameters, function(error, url) {
+          resolve({
+            name: rawPlace.name,
+            thumbnailUrl: !!error ? '' : url
+          });
+        })
+      }
+    );
   }
 
 }

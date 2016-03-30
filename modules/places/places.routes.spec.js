@@ -23,19 +23,26 @@ describe('Routing', function () {
         let keyword = 'shopping'
 
         it('should return a list of places', function (done) {
-          let pattern = 'maps/api/place/nearbysearch/json\?.*keyword='+ keyword +'.*'
+          let nearbySearchPattern = new RegExp('maps/api/place/nearbysearch/json\?.*keyword='+ keyword +'.*');
+          let imageFetchPattern = new RegExp('maps/api/place/photo\?.*photoreference=.*');
+
           nock('https://maps.googleapis.com')
-          .get(new RegExp(pattern))
-          .reply(status.OK, googleMockedData);
+          .get(nearbySearchPattern)
+          .reply(status.OK, googleMockedData)
+          .get(imageFetchPattern)
+          .reply(status.FOUND, 'Just a redirect to the photo', {
+              Location: 'http://myimageurl/file.jpg'
+          });
 
           request(app)
           .get(url + '?keyword=' + keyword)
           .end(function (err, res) {
             expect(err).to.not.exist;
             expect(res).to.have.status(status.OK);
-            expect(res.body).to.deep.equal([{
+            expect(res.body[0]).to.deep.equal({
               name: 'Shopping Guararapes',
-            }]);
+              thumbnailUrl: 'http://myimageurl/file.jpg'
+            });
 
             done();
           });
@@ -47,6 +54,7 @@ describe('Routing', function () {
 
         it('should return an empty list of places', function (done) {
           let pattern = 'maps/api/place/nearbysearch/json\?.*keyword='+ keyword + '($|\&.*)'
+
           nock('https://maps.googleapis.com')
           .get(new RegExp(pattern))
           .reply(status.OK, googleMockedData);
@@ -62,8 +70,6 @@ describe('Routing', function () {
           });
         });
       });
-
-
     });
   });
 });
