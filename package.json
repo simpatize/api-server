@@ -2,11 +2,13 @@
   "name": "simpatize-server",
   "version": "1.0.0",
   "description": "simpatize server",
+  "engines": {"node": "5.5.0"},
   "main": "server.js",
   "scripts": {
     "start": "nodemon server.js",
     "test": "NODE_ENV=test mocha 'modules/**/*.spec.js'",
-    "lint": "jscs ."
+    "lint": "jscs .",
+    "server" : "node server.js"
   },
   "author": "Mauricio Melo",
   "license": "ISC",
