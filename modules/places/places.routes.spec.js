@@ -41,7 +41,8 @@ describe('Routing', function () {
             expect(res).to.have.status(status.OK);
             expect(res.body[0]).to.deep.equal({
               name: 'Shopping Guararapes',
-              thumbnailUrl: 'http://myimageurl/file.jpg'
+              thumbnailUrl: 'http://myimageurl/file.jpg',
+              icon: 'https://maps.gstatic.com/mapfiles/place_api/icons/shopping-71.png'
             });
 
             done();

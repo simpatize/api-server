@@ -33,11 +33,13 @@ describe('PlaceService', function () {
           expect(invokedPhotoReferences).to.deep.equal(googleMockedDataPhotoReferences);
           expect(places[0]).to.deep.equal({
             name: 'Shopping Guararapes',
-            thumbnailUrl: 'http://the-photo-url/file.jpg'
+            thumbnailUrl: 'http://the-photo-url/file.jpg',
+            icon: 'https://maps.gstatic.com/mapfiles/place_api/icons/shopping-71.png',
           });
           expect(places[1]).to.deep.equal({
             name: 'Shopping Recife',
-            thumbnailUrl: 'http://the-photo-url/file.jpg'
+            thumbnailUrl: 'http://the-photo-url/file.jpg',
+            icon: 'https://maps.gstatic.com/mapfiles/place_api/icons/shopping-71.png',
           });
 
           done();
@@ -68,6 +70,7 @@ describe('PlaceService', function () {
         placeService.searchByKeyword(keyword, function (error, places) {
           expect(places[0]).to.deep.equal({
             name: 'Shopping Guararapes',
+            icon: 'https://maps.gstatic.com/mapfiles/place_api/icons/shopping-71.png',
             thumbnailUrl: '',
           });
           done();
@@ -99,10 +102,13 @@ describe('PlaceService', function () {
           try {
             expect(places[0]).to.deep.equal({
               name: 'Shopping Guararapes',
+              icon: 'https://maps.gstatic.com/mapfiles/place_api/icons/shopping-71.png',
+
               thumbnailUrl: 'http://the-photo-url/file.jpg',
             });
             expect(places[1]).to.deep.equal({
               name: 'Shopping Recife',
+              icon: 'https://maps.gstatic.com/mapfiles/place_api/icons/shopping-71.png',
               thumbnailUrl: '',
             });
             done();

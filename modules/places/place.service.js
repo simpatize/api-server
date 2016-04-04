@@ -38,29 +38,25 @@ class PlaceService {
   }
 
   _createPlacePromise(rawPlace) {
+    return new Promise((resolve, reject) => {
+      let place = {};
+      place.name = rawPlace.name;
+      place.icon = rawPlace.icon;
 
-    return new Promise(
-      (resolve, reject) => {
-        if (!rawPlace.photos) {
-          return resolve({
-            name: rawPlace.name,
-            thumbnailUrl: '',
-          });
-        }
-
+      if (!rawPlace.photos) {
+        place.thumbnailUrl = '';
+        return resolve(place);
+      } else {
         let imageFetchParameters = {
           photoreference: rawPlace.photos[0].photo_reference,
         }
         this.googlePlaces.imageFetch(imageFetchParameters, function(error, url) {
-          resolve({
-            name: rawPlace.name,
-            thumbnailUrl: !!error ? '' : url
-          });
-        })
+          place.thumbnailUrl = !!error ? '' : url;
+          resolve(place);
+        });
       }
-    );
+    });
   }
-
 }
 
 module.exports = PlaceService;
