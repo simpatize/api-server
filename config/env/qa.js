@@ -1,6 +1,6 @@
 module.exports = {
   db: {
-    mongodb: process.env.MONGOLAB_URI;
+    mongodb: process.env.MONGOLAB_URI,
   },
-  googlePlacesApiKey: process.env.GOOGLE_PLACES_API_KEY;
+  googlePlacesApiKey: process.env.GOOGLE_PLACES_API_KEY,
 };
