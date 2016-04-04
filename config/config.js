@@ -1,7 +1,7 @@
 'use strict';
 
 const _ = require('lodash');
-const ENVIROMENTS = ['test', 'production', 'development'];
+const ENVIROMENTS = ['test', 'production', 'development', 'qa'];
 var config = {};
 
 if (_.includes(ENVIROMENTS, process.env.NODE_ENV)) {
