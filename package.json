@@ -10,7 +10,7 @@
     "lint": "jscs .",
     "server" : "node server.js"
   },
-  "author": "Mauricio Melo",
+  "author": "Simpatize Team",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.15.0",
