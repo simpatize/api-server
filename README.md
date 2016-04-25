@@ -1,3 +1,9 @@
-Simpatize RESTful API Server
+# Simpatize RESTful API Server
 
-Wait for it...
+## Run application
+
+To run the application make sure mongodb is installed and running
+
+```
+npm install && npm start
+```
