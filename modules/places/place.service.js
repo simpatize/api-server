@@ -49,16 +49,16 @@ class PlaceService {
               place.phone = placeDetail.result.formatted_phone_number;
             
               if(placeDetail.result.photos){
-                var imageReference = {reference: placeDetail.result.photos[0].photo_reference};
-
+                var imageReference = {photoreference: placeDetail.result.photos[0].photo_reference};
                 this.googlePlaces.imageFetch(imageReference, function(error, url) {
-                  if(error) throw error;
                   place.photo = !!error ? '' : url;
-                  return resolve(place);
+                  resolve(place);
                 });
-              }
+              }else{
+              resolve(place);
+            }
           }
-          resolve(place);
+          
             
         });
   }
