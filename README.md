@@ -1,6 +1,8 @@
 # Simpatize RESTful API Server
 Project's Issues ->  [![Stories in Ready](https://badge.waffle.io/simpatize/simpatize.github.io.svg?label=ready&title=Ready)](http://waffle.io/simpatize/simpatize.github.io)
 
+[![Build Status](https://snap-ci.com/simpatize/api-server/branch/master/build_image)](https://snap-ci.com/simpatize/api-server/branch/master)
+
 Receive calls from the front to show infos about safe places to opressed community.
 
 ## Contribution
