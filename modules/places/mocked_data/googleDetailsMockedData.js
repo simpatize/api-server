@@ -3,7 +3,7 @@ module.exports = {
    "result" : {
       "photos": [
         {
-          "photo_reference": "http://myimageurl/file.jpg",
+          "photo_reference": "CmRdAAAAG4_LBMy1qValdBou47hKc66aswGCQVTlr9UhFO1jffe6CSJdEFZJAvfXydJEyztFGCyyNxL3pyZKGHbRzfgOhDBz97XRMfiYSQbYwhp1bF0SycfPC-048AQixH4GmseeEhAjEhDOZLBJFyblRNgjK8IaGhTnQwjOEbzSdB4PdqTR3BzwehZPPg",
           "height": 300,
           "width": 300,
           "html_attributions": []

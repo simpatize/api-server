@@ -55,11 +55,9 @@ class PlaceService {
                   resolve(place);
                 });
               }else{
-              resolve(place);
-            }
-          }
-          
-            
+                resolve(place);
+              }
+          }else{resolve(place);}
         });
   }
   

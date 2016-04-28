@@ -80,7 +80,7 @@ describe('Routing', function () {
           
           var place = {
             'name': 'Siri Cascudo',
-            'photo': '',
+            'photo': 'http://myimageurl/file.jpg',
             'address': 'Av. Herculano Bandeira, 785, Pina',
             'phone': '558112345678'
           };

@@ -166,6 +166,7 @@ describe('PlaceService', function () {
       placeService.getPlaceDetails(placeid, function (error, details) {
         if(error) console.log(error);
         try{
+          expect(invokedPhotoReferences[0]).to.deep.equal(googleDetailsMockedData.result.photos[0].photo_reference);
           expect(details).to.deep.equal({
           'name': 'Siri Cascudo',
           'photo': 'http://myimageurl/file.jpg',
@@ -188,6 +189,10 @@ describe('PlaceService', function () {
                             "result" : null
                            }
                     );
+          },
+          imageFetch: function(parameters, callback) {
+            invokedPhotoReferences.push(parameters.photoreference);
+            callback(null, 'http://myimageurl/file.jpg');
           }
       }
       
