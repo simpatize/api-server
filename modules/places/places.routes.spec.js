@@ -8,7 +8,8 @@ var status = require('http-status');
 var request = require('supertest');
 var path = require('path');
 var app = require(path.resolve('server'));
-var googleMockedData = require('./googleMockedData');
+var googleMockedData = require('./mocked_data/googleMockedData');
+var googleDetailsMockedData = require('./mocked_data/googleDetailsMockedData');
 var nock = require('nock');
 
 chai.use(chaiHttp);
@@ -70,6 +71,35 @@ describe('Routing', function () {
             done();
           });
         });
+      });
+      
+      context('a place details', function(){
+        
+        it('should be returned', function(done){
+          
+          var place = {
+            'name': 'Siri Cascudo',
+            'photo': 'http://myimageurl/file.jpg',
+            'address': 'Av. Herculano Bandeira, 785, Pina',
+            'phone': '558112345678'
+          };
+        
+          let pattern = '/maps/api/place/details/json\?.*reference=ChIJN1t_tDeuEmsRUsoyG83frY4($|\&.*)';
+          
+          nock('https://maps.googleapis.com')
+          .get(new RegExp(pattern))
+          .reply(status.OK, googleDetailsMockedData);
+          
+          request(app)
+          .get(url + '?reference=ChIJN1t_tDeuEmsRUsoyG83frY4')
+          .end(function(err, res){
+            expect(err).to.not.exist;
+            expect(res).to.have.status(status.OK);
+            expect(res.body).to.deep.equal(place);
+            done();
+          });
+        });
+        
       });
     });
   });

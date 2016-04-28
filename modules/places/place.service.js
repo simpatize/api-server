@@ -13,6 +13,43 @@ class PlaceService {
     this.googlePlaces = googlePlaces;
   }
 
+  getPlaceDetails(reference, callback){
+    if (!reference || reference.trim() === '') {
+      return callback(null, []);
+    }
+    
+    this.googlePlaces.placeDetailsRequest({reference: reference}, function (error, placeDetail) {
+        if (error) throw error;
+        
+        var promise = new Promise((resolve, reject) => {
+           var place = {
+              'name': '',
+              'photo': '',
+              'address': '',
+              'phone': ''
+          }
+    
+          if(placeDetail.result != null){
+              place.name = placeDetail.result.name;
+              place.photo = placeDetail.result.photos[0].photo_reference;
+              place.address = placeDetail.result.formatted_address;
+              place.phone = placeDetail.result.formatted_phone_number;
+          }
+          
+          resolve(place);
+        });
+      
+        promise.then(
+          function(place){
+            callback(null, place);  
+          },
+          function(error){
+            callback(error, null);
+          }
+        );
+    });
+  }
+  
   searchByKeyword (keyword, callback) {
     if (!keyword || keyword.trim() === '') {
       return callback(null, []);

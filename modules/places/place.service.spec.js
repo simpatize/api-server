@@ -3,7 +3,7 @@
 var expect = require('chai').expect;
 var sinon = require('sinon');
 var PlaceService = require('./place.service');
-var googleMockedData = require('./googleMockedData')
+var googleMockedData = require('./mocked_data/googleMockedData')
 var _ = require('lodash');
 
 describe('PlaceService', function () {
@@ -140,4 +140,79 @@ describe('PlaceService', function () {
       });
     });
   });
-})
+  
+  describe('getPlaceDetails', function(){
+    var googleDetailsMockedData = require('./mocked_data/googleDetailsMockedData');
+    it('should return a place information', function(done){
+      let reference = 'ChIJN1t_tDeuEmsRUsoyG83frY4';
+      let googlePlacesMock = {
+          placeDetailsRequest: function (parameters, callback) {
+            expect(parameters.reference).to.equal(reference);
+            callback(null, googleDetailsMockedData);
+          }
+      }
+      
+      let placeService = new PlaceService(googlePlacesMock);
+      
+      placeService.getPlaceDetails(reference, function (error, details) {
+          expect(details).to.deep.equal({
+          'name': 'Siri Cascudo',
+          'photo': 'http://myimageurl/file.jpg',
+          'address': 'Av. Herculano Bandeira, 785, Pina',
+          'phone': '558112345678'
+          });
+          done();
+      });
+    });
+    
+    it('should return a empty place information when google api returns none results', function(done){
+      let reference = 'ChIJN1t_tDeuEmsRUsoyG83frY4';
+      let googlePlacesMock = {
+          placeDetailsRequest: function (parameters, callback) {
+            expect(parameters.reference).to.equal(reference);
+            callback(null, {"html_attributions" : [],
+                            "result" : null
+                           }
+                    );
+          }
+      }
+      
+      let placeService = new PlaceService(googlePlacesMock);
+      
+      placeService.getPlaceDetails(reference, function (error, details) {
+        if(error) console.log(error);
+        try{
+          expect(details).to.deep.equal({
+          'name': '',
+          'photo': '',
+          'address': '',
+          'phone': ''
+          });
+          done();
+        }catch(e){
+          done(e);
+        }
+      });
+    });
+    
+    let blankReference = ['', ' ', null, undefined];
+    blankReference.forEach((reference)=> {
+    it('should return an empty array', function (done) {
+        let googlePlacesMock = {
+          placeDetailsRequest: function (parameters, callback) {
+            expect(parameters.reference).to.equal(reference);
+            callback(null, googleDetailsMockedData);
+          }
+        }
+
+        let placeService = new PlaceService(googlePlacesMock);
+
+        placeService.getPlaceDetails(reference, function (error, details) {
+          expect(details).to.deep.equal([]);
+          done();
+        });
+      });
+    });
+   });
+    
+});
