@@ -13,31 +13,15 @@ class PlaceService {
     this.googlePlaces = googlePlaces;
   }
 
-  getPlaceDetails(reference, callback){
-    if (!reference || reference.trim() === '') {
+  getPlaceDetails(placeid, callback){
+    if (!placeid || placeid.trim() === '') {
       return callback(null, []);
     }
     
-    this.googlePlaces.placeDetailsRequest({reference: reference}, function (error, placeDetail) {
+    this.googlePlaces.placeDetailsRequest({placeid: placeid}, (error, placeDetail) => {
         if (error) throw error;
         
-        var promise = new Promise((resolve, reject) => {
-           var place = {
-              'name': '',
-              'photo': '',
-              'address': '',
-              'phone': ''
-          }
-    
-          if(placeDetail.result != null){
-              place.name = placeDetail.result.name;
-              place.photo = placeDetail.result.photos[0].photo_reference;
-              place.address = placeDetail.result.formatted_address;
-              place.phone = placeDetail.result.formatted_phone_number;
-          }
-          
-          resolve(place);
-        });
+        var promise = this._makeAPromiseToPlaceDetail(placeDetail);
       
         promise.then(
           function(place){
@@ -48,6 +32,35 @@ class PlaceService {
           }
         );
     });
+  }
+  
+  _makeAPromiseToPlaceDetail(placeDetail){
+    return new Promise((resolve, reject) => {
+           var place = {
+              'name': '',
+              'photo': '',
+              'address': '',
+              'phone': ''
+          }
+    
+          if(placeDetail.result != null){
+              place.name = placeDetail.result.name;
+              place.address = placeDetail.result.formatted_address;
+              place.phone = placeDetail.result.formatted_phone_number;
+            
+              if(placeDetail.result.photos){
+                var imageReference = {reference: placeDetail.result.photos[0].photo_reference};
+
+                this.googlePlaces.imageFetch(imageReference, function(error, url) {
+                  if(error) throw error;
+                  place.photo = !!error ? '' : url;
+                  return resolve(place);
+                });
+              }
+          }
+          resolve(place);
+            
+        });
   }
   
   searchByKeyword (keyword, callback) {
@@ -77,6 +90,7 @@ class PlaceService {
   _createPlacePromise(rawPlace) {
     return new Promise((resolve, reject) => {
       let place = {};
+      place.placeid = rawPlace.place_id;
       place.name = rawPlace.name;
       place.icon = rawPlace.icon;
 
@@ -94,6 +108,7 @@ class PlaceService {
       }
     });
   }
+  
 }
 
 module.exports = PlaceService;

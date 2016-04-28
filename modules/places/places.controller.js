@@ -5,7 +5,7 @@ var placeService = new PlaceService();
 
 exports.list = function (req, res) {
   let keyword = req.query.keyword;
-  let reference = req.query.reference;
+  let placeid = req.query.placeid;
   
   if(keyword != undefined){
       placeService.searchByKeyword(keyword, function (error, places) {
@@ -14,8 +14,8 @@ exports.list = function (req, res) {
       });
   }
   
-  if(reference != undefined){
-    placeService.getPlaceDetails(reference, function(error, place){
+  if(placeid != undefined){
+    placeService.getPlaceDetails(placeid, function(error, place){
       if (error) throw error;
       res.json(place);
     });

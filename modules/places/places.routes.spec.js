@@ -41,6 +41,7 @@ describe('Routing', function () {
             expect(err).to.not.exist;
             expect(res).to.have.status(status.OK);
             expect(res.body[0]).to.deep.equal({
+              placeid: 'ChIJp18-77nhqgcRxiSziGKAXNU',
               name: 'Shopping Guararapes',
               thumbnailUrl: 'http://myimageurl/file.jpg',
               icon: 'https://maps.gstatic.com/mapfiles/place_api/icons/shopping-71.png'
@@ -79,19 +80,24 @@ describe('Routing', function () {
           
           var place = {
             'name': 'Siri Cascudo',
-            'photo': 'http://myimageurl/file.jpg',
+            'photo': '',
             'address': 'Av. Herculano Bandeira, 785, Pina',
             'phone': '558112345678'
           };
         
-          let pattern = '/maps/api/place/details/json\?.*reference=ChIJN1t_tDeuEmsRUsoyG83frY4($|\&.*)';
+          let pattern = '/maps/api/place/details/json\?.*placeid=ChIJN1t_tDeuEmsRUsoyG83frY4($|\&.*)';
+          let imageFetchPattern = new RegExp('maps/api/place/photo\?.*photoreference=.*');
           
           nock('https://maps.googleapis.com')
           .get(new RegExp(pattern))
-          .reply(status.OK, googleDetailsMockedData);
+          .reply(status.OK, googleDetailsMockedData)
+          .get(imageFetchPattern)
+          .reply(status.FOUND, 'Just a redirect to the photo', {
+              Location: 'http://myimageurl/file.jpg'
+          });
           
           request(app)
-          .get(url + '?reference=ChIJN1t_tDeuEmsRUsoyG83frY4')
+          .get(url + '?placeid=ChIJN1t_tDeuEmsRUsoyG83frY4')
           .end(function(err, res){
             expect(err).to.not.exist;
             expect(res).to.have.status(status.OK);
