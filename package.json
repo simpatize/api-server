@@ -20,7 +20,7 @@
     "googleplaces": "^0.6.0",
     "http-status": "^0.2.0",
     "lodash": "^4.3.0",
-    "mongoose": "^4.4.3"
+    "mongoose": "^5.10.3"
   },
   "devDependencies": {
     "chai": "^3.5.0",
